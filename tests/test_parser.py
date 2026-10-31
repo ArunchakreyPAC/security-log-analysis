@@ -20,6 +20,15 @@ def test_failed_password_for_invalid_user_is_flagged():
     assert p.invalid_user is True
 
 
+def test_invalid_user_with_extra_space_before_name():
+    # Real line from the Loghub sample: two spaces before the username.
+    p = parse_message(
+        "Failed password for invalid user  0101 from 5.188.10.180 port 36279 ssh2"
+    )
+    assert p.event_type == "auth_failure"
+    assert (p.username, p.invalid_user) == ("0101", True)
+
+
 def test_accepted_login_is_success():
     p = parse_message("Accepted publickey for alice from 198.51.100.7 port 49116 ssh2")
     assert (p.event_type, p.outcome) == ("auth_success", "success")

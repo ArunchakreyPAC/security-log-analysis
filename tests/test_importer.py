@@ -39,6 +39,12 @@ def test_import_is_idempotent(conn):
     assert conn.execute("SELECT COUNT(*) FROM events").fetchone()[0] == 11
 
 
+def test_host_comes_from_component_column(conn):
+    import_csv(conn, FIXTURE, year=2025)
+    hosts = {r["host"] for r in conn.execute("SELECT host FROM events")}
+    assert hosts == {"LabSZ"}
+
+
 def test_event_types_are_classified(conn):
     import_csv(conn, FIXTURE, year=2025)
     counts = {

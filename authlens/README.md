@@ -8,15 +8,14 @@ Next: SQL detection queries, API, small dashboard.
 
 ## Quick start
 
-```bash
+
 pip install -r requirements.txt
 python -m pytest                       # run the tests
 
 # download OpenSSH_2k.log_structured.csv from Loghub into sample-data/ (see Data source)
-python -m authlens.importer \
-    --csv sample-data/OpenSSH_2k.log_structured.csv \
-    --db authlens.db --year 2025
-```
+python -m authlens.importer `
+  --csv sample-data/OpenSSH_2k.log_structured.csv `
+  --db authlens.db --year 2025
 
 Example output:
 
@@ -41,13 +40,13 @@ Rejected:    2
 ## Expected CSV columns
 
 Required: `Date` (month name), `Day`, `Time`, `Content`.
-Used if present: `LineId`, `Component` (process), `Pid`, `Host`.
+Used if present: `LineId`, `Pid`, and `Component`.
+
+In Loghub's structured OpenSSH CSV the `Component` column holds the **hostname** (e.g. `LabSZ`),
+not the process name, so it is stored as `host`. Verified against `OpenSSH_2k.log_structured.csv`
+(2,000 rows: all imported, none rejected).
 
 If a required column is missing the import stops with an error that lists the columns found.
-
-> **Verify against the real file.** The column names above follow Loghub's structured OpenSSH
-> format as I understand it, but this project was scaffolded without access to the real CSV.
-> Check the header row of the downloaded file against this list before relying on the importer.
 
 ## Schema
 
@@ -109,3 +108,13 @@ Malformed IPs are stored as NULL rather than guessed.
   login attempts" on `event_type = 'auth_failure'` and sum `repeat_count`.
 - Usernames containing spaces are not handled in `Failed password` messages.
 - Only the message formats above are parsed; other sshd messages are kept as `other`.
+
+
+### Citation
+
+Jieming Zhu, Shilin He, Pinjia He, Jinyang Liu, Michael R. Lyu.
+[Loghub: A Large Collection of System Log Datasets for AI-driven Log Analytics](https://arxiv.org/abs/2008.06448).
+IEEE International Symposium on Software Reliability Engineering (ISSRE), 2023.
+
+- `tests/fixtures/synthetic_openssh_sample.csv` is **synthetic**, hand-written for tests, using
+  reserved documentation IP ranges (203.0.113.0/24, 198.51.100.0/24). It is not real traffic.

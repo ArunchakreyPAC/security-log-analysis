@@ -127,8 +127,10 @@ def import_csv(conn: sqlite3.Connection, csv_path: str | Path, year: int) -> Imp
                 ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 (
                     event_time.isoformat(timespec="seconds"),
-                    (row.get("Host") or "").strip() or None,
-                    (row.get("Component") or "").strip() or None,
+                    # Loghub's structured OpenSSH CSV has no Host column; its
+                    # "Component" column actually holds the hostname (e.g. LabSZ).
+                    (row.get("Host") or row.get("Component") or "").strip() or None,
+                    (row.get("Process") or "").strip() or None,
                     int(pid_text) if pid_text.isdigit() else None,
                     parsed.event_type,
                     parsed.outcome,

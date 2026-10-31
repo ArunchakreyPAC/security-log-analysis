@@ -24,7 +24,7 @@ _IP = r"[0-9a-fA-F:.]+"
 
 _REPEAT = re.compile(r"message repeated (\d+) times")
 _FAILED = re.compile(
-    rf"Failed (?P<method>\S+) for (?P<invalid>invalid user )?(?P<user>\S+) "
+    rf"Failed (?P<method>\S+) for (?P<invalid>invalid user\s+)?(?P<user>\S+) "
     rf"from (?P<ip>{_IP}) port (?P<port>\d+)"
 )
 _ACCEPTED = re.compile(
