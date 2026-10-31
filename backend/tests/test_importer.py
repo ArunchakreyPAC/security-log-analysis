@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from authlens.db import connect, init_schema
-from authlens.importer import SchemaError, import_csv
+from backend.authlens.db import connect, init_schema
+from backend.authlens.importer import SchemaError, import_csv
 
 FIXTURE = Path(__file__).parent / "fixtures" / "synthetic_openssh_sample.csv"
 

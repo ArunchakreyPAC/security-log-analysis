@@ -1,6 +1,6 @@
 import pytest
 
-from authlens.parser import build_timestamp, parse_message
+from backend.authlens.parser import build_timestamp, parse_message
 
 
 def test_failed_password_for_valid_user():

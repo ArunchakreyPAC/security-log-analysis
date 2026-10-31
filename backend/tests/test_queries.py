@@ -2,9 +2,9 @@ from pathlib import Path
 
 import pytest
 
-from authlens import queries
-from authlens.db import connect, init_schema
-from authlens.importer import import_csv
+from backend.authlens import queries
+from backend.authlens.db import connect, init_schema
+from backend.authlens.importer import import_csv
 
 FIXTURE = Path(__file__).parent / "fixtures" / "synthetic_openssh_sample.csv"
 ATTACKER = "203.0.113.5"
